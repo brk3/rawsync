@@ -79,7 +79,7 @@ usage()
 {
     cat << EOF
 
-    usage: $0 <raw-files-dir> <out-dir>
+    usage: $(basename $0) <raw-files-dir> <out-dir>
 
     Takes a directory of raw files, (*.CR2), and copies them to dated
     subdirectories under <out-dir>. Duplicates will be skipped.
