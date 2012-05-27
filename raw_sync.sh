@@ -114,4 +114,12 @@ for raw_file in $(find $RAW_DIR -name "*.CR2"); do
         echo_color "$raw_file copied to $COPY_TO_DIR/$(basename $raw_file)" \
             green
     fi
+
+    # Create a symlink in OUT_DIR/all
+    if [[ ! -d $OUT_DIR/all ]]; then
+        mkdir $OUT_DIR/all
+    fi
+    if [[ ! -f $OUT_DIR/all/$(basename $raw_file) ]]; then
+        ln -s $COPY_TO_DIR/$(basename $raw_file) $OUT_DIR/all
+    fi
 done
