@@ -94,6 +94,8 @@ if [[ -z $RAW_DIR ]] || [[ -z $OUT_DIR ]]; then
     exit $WRONG_PARAMS
 fi
 
+copied_count=0
+skipped_count=0
 for raw_file in $(find $RAW_DIR -name "*.CR2"); do
     # Get the timestamp on the raw file
     DATE=$(exiv2 pr $raw_file | grep -a timestamp | sed \
@@ -109,17 +111,14 @@ for raw_file in $(find $RAW_DIR -name "*.CR2"); do
     # Copy the raw file to the dest if it doesn't exist
     if [[ -f $COPY_TO_DIR/$(basename $raw_file) ]]; then
         echo_color "$COPY_TO_DIR/$(basename $raw_file) exists, skipping" yellow
+        ((skipped_count++))
     else
         cp $raw_file $COPY_TO_DIR
-        echo_color "$raw_file copied to $COPY_TO_DIR/$(basename $raw_file)" \
+        echo_color "Copied $raw_file to $COPY_TO_DIR/$(basename $raw_file)" \
             green
-    fi
-
-    # Create a symlink in OUT_DIR/all
-    if [[ ! -d $OUT_DIR/all ]]; then
-        mkdir $OUT_DIR/all
-    fi
-    if [[ ! -f $OUT_DIR/all/$(basename $raw_file) ]]; then
-        ln -s $COPY_TO_DIR/$(basename $raw_file) $OUT_DIR/all
+        ((copied_count++))
     fi
 done
+
+echo
+echo "Done. Copied: $copied_count, Skipped: $skipped_count"
