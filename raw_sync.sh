@@ -212,6 +212,11 @@ if [[ -z $RAW_DIR ]] || [[ -z $OUT_DIR ]]; then
 fi
 
 if [ $IMPORT == true ]; then
+    command -v exiv2 >/dev/null 2>&1 || {
+        echo "-i requires the exiv2 command to present. Please run";
+        echo "'sudo apt-get install exiv2' or similar."
+        exit 1;
+    }
     perform_import
 fi
 
