@@ -6,6 +6,7 @@ sub directories.
 
 Usage
 =====
+For more info see:
 ```
-bash ./raw_sync.sh <raw-files-dir> <out-dir>
+bash raw_sync.sh -h
 ```
