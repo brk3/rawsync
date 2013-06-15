@@ -180,7 +180,7 @@ fi
 IMPORT=false
 CLEAN=false
 
-while getopts cir:o: opt; do
+while getopts hcir:o: opt; do
    case "$opt" in
        i)
            IMPORT=true
