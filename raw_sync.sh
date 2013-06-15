@@ -137,7 +137,8 @@ perform_cleanup() {
     CANDIDATES=()
     SIZE=0  # in bytes
     for RAW in $ALL_RAWS; do
-        MATCH=$(echo "${ALL_JPGS[@]:0}" | grep -io "$(basename $RAW .CR2).jpg")
+        MATCH=$(echo "${ALL_JPGS[@]:0}" | \
+                grep -io -m1 "$(basename $RAW .CR2).jpg")
         if [ -z $MATCH ]; then
             CANDIDATES+=($RAW)
             let SIZE+=$(stat -t $RAW | cut -f 2 -d" ")
@@ -167,9 +168,7 @@ perform_cleanup() {
     done
 
     if [ "$OK" == "OK" ]; then
-        DEST="/tmp/raw_sync_cleanup"
-        mkdir -p $DEST
-        mv ${CANDIDATES[@]} $DEST
+        rm -rf ${CANDIDATES[@]}
     fi
 }
 
@@ -222,7 +221,7 @@ fi
 
 if [ $CLEAN == true ]; then
     echo
-    echo_color "WARNING!  This will move all CR2 files from $RAW_DIR " "red"
+    echo_color "WARNING!  This will remove all CR2 files from $RAW_DIR " "red"
     echo_color "for which a matching jpg does not exist in $OUT_DIR" "red"
     echo
     OK=""
